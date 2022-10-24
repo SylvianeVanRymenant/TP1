@@ -1,17 +1,11 @@
 #API_qui_permet_de_récolter_les_gros_titres_en_français_des_récents_articles_journalistiques_sur_le_Web
 #Utile_pour_histoire_du_journalisme_actuel
 
+import json
 import requests
-
 url = "https://newscatcher.p.rapidapi.com/v1/latest_headlines"
+data = {"lang":"fr","country":"Belgium","media":"True"}
+resp = request.get(url, data)
+json_list = json.loads(resp.text)
 
-querystring = {"topic":"news","lang":"fr","media":"True"}
-
-headers = {
-	"X-RapidAPI-Key": "291a91a653mshf3bdc78ec2009a4p10af83jsn1b0b5c445c9c",
-	"X-RapidAPI-Host": "newscatcher.p.rapidapi.com"
-}
-
-response = requests.request("GET", url, headers=headers, params=querystring)
-
-print(response.text)
+print(resp)
