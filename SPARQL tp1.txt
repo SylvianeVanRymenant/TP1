@@ -1,0 +1,27 @@
+# Recherche des journalistes belges sur WikiData
+endpoint = "https://query.wikidata.org/bigdata/namespace/wdq/sparql"
+sparql = SPARQLWrapper(endpoint)
+
+statement = """
+SELECT DISTINCT ?item ?itemLabel WHERE {
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+  {
+    SELECT DISTINCT ?item WHERE {
+      ?item p:P106 ?statement0.
+      ?statement0 (ps:P106/(wdt:P279*)) wd:Q1930187.
+      ?item p:P27 ?statement1.
+      ?statement1 (ps:P27/(wdt:P279*)) wd:Q31.
+    }
+    LIMIT 100
+  }
+}
+ORDER BY ?itemLabel
+"""
+
+sparql.setQuery(statement)
+sparql.setReturnFormat(JSON)
+results = sparql.query().convert()
+
+rows = results['results']['bindings']
+print(f"\n{len(rows)} Journalistesbelges\n")
+print(rows)
